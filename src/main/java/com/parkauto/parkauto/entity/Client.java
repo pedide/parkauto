@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -48,6 +49,9 @@ private Vehicule vehicule;
 @OneToMany(mappedBy="client")
 private List<Commande> commandeList;
 
+@ManyToMany(mappedBy="clientList")
+private List<Location> locationList;
+
 public Client() {
 	super();
 }
@@ -62,6 +66,35 @@ public Client(String nom, String prenom, String adresse, String cp, String ville
 	this.ville = ville;
 	this.pays = pays;
 	this.vehicule = vehicule;
+}
+
+
+public Client(String nom, String prenom, String adresse, String cp, String ville, String pays, Vehicule vehicule,
+		List<Commande> commandeList, List<Location> locationList) {
+	super();
+	this.nom = nom;
+	this.prenom = prenom;
+	this.adresse = adresse;
+	this.cp = cp;
+	this.ville = ville;
+	this.pays = pays;
+	this.vehicule = vehicule;
+	this.commandeList = commandeList;
+	this.locationList = locationList;
+}
+public Client(Long id, String nom, String prenom, String adresse, String cp, String ville, String pays,
+		Vehicule vehicule, List<Commande> commandeList, List<Location> locationList) {
+	super();
+	this.id = id;
+	this.nom = nom;
+	this.prenom = prenom;
+	this.adresse = adresse;
+	this.cp = cp;
+	this.ville = ville;
+	this.pays = pays;
+	this.vehicule = vehicule;
+	this.commandeList = commandeList;
+	this.locationList = locationList;
 }
 public Client(Long id, String nom, String prenom, String adresse, String cp, String ville, String pays,
 		Vehicule vehicule) {
@@ -171,6 +204,12 @@ public List<Commande> getCommandeList() {
 }
 public void setCommandeList(List<Commande> commandeList) {
 	this.commandeList = commandeList;
+}
+public List<Location> getLocationList() {
+	return locationList;
+}
+public void setLocationList(List<Location> locationList) {
+	this.locationList = locationList;
 }
 
 
