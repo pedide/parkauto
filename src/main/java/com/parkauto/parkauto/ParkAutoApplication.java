@@ -28,7 +28,7 @@ private IUserRepository userRepository;
 			user.setLastname("admin");
 			user.setRole(Role.ADMIN);
 			user.setPassword(new BCryptPasswordEncoder()
-					.encode("admin"));
+					.encode("admin"));  //admin
 
 			userRepository.save(user);
 
