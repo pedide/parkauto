@@ -33,4 +33,10 @@ public class EmailService {
         sendEmail(email,subject,message);
 
     }
+    public void sendResetPassword(String email, String fisrtName, String lien){
+        String subject ="Réinitilisation du mot de passe";
+        String message ="Salut "+fisrtName+ ",\n\nVoici le lien pour réinitialiser votre mot de passe"+lien+"";
+        sendEmail(email,subject,message);
+
+    }
 }

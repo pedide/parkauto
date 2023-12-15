@@ -2,7 +2,11 @@ package com.parkauto.parkauto.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
+@Data
+@RequiredArgsConstructor
 @Entity
 @Table(name="CAMION")
 public class Camion extends Vehicule{
@@ -17,20 +21,8 @@ public class Camion extends Vehicule{
 		return "BROUMMMMMM!!";
 	}
 
-	public Camion() {
-		super();
-		
-	}
 
-	public Camion(int anneeModel, double prix) {
-		super(anneeModel, prix);
-		
-	}
 
-	public Camion(Long id, int anneeModel, double prix) {
-		super(id, anneeModel, prix);
-		
-	}
 
 	
 }

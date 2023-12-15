@@ -31,7 +31,7 @@ public class SecurityConfiguration {
     throws  Exception{
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers(antMatcher("/api/auth/**"))
+                        request -> request.requestMatchers(antMatcher("/**"))
                                 .permitAll()
                                 .requestMatchers(antMatcher("/api/admin")).hasAuthority(Role.ADMIN.name())
                                 .requestMatchers(antMatcher("/api/user")).hasAuthority(Role.USER.name())

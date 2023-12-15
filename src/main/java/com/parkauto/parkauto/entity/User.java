@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -31,7 +32,18 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name="ROLE")
-    private Role role;
+    private Role role;  //ROLE_USER(read,edit), ROLE_ADMIN(...,delete)
+
+    @Column(name="ProfileImageURL")
+    private String profileImageURL;
+
+    private String[] authorities; //[]=tableau de strings //Authorities = permissions(read,edit,delete)
+
+    private boolean isActive; //Pour activer les rôles
+    private boolean isNotLocked; //Pour bloquer ou pas un user
+    private Date lastLoginDate = new Date();
+    private Date lastLoginDateDisplay = new Date();
+    private Date joinDate = new Date();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
