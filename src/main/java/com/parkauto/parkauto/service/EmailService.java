@@ -7,6 +7,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import static com.parkauto.parkauto.constant.EmailConstant.EMAIL_SUBJECT;
+import static com.parkauto.parkauto.constant.EmailConstant.FROM_EMAIL;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -21,14 +24,14 @@ public class EmailService {
         mailMessage.setTo(toEmail);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        mailMessage.setFrom("formationedidebs@gmail.com");
+        mailMessage.setFrom(FROM_EMAIL);
 
         javaMailSender.send(mailMessage);
 
     }
 
     public void sendConfirmRegister(String email, String firstName, String password){
-        String subject = "Vous venez de créer votre compte sur edidebs formation";
+        String subject = EMAIL_SUBJECT;
         String message= "Salut"+firstName+", \n\nVoici votre mot de passe :"+password+"";
         sendEmail(email,subject,message);
 
