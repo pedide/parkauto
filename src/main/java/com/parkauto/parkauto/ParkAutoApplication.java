@@ -58,14 +58,14 @@ private IUserRepository userRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
-		User adminAccount = userRepository.findByRole(Role.ADMIN);
+		User adminAccount = userRepository.findByRole(Role.ROLE_ADMIN);
 		if(adminAccount == null){
 			User user = new User();
 
 			user.setEmail("admin@mail.com");
 			user.setFirstname("admin");
 			user.setLastname("admin");
-			user.setRole(Role.ADMIN);
+			user.setRole(Role.ROLE_ADMIN);
 			user.setPassword(new BCryptPasswordEncoder()
 					.encode("admin"));  //admin
 
@@ -73,5 +73,9 @@ private IUserRepository userRepository;
 
 		}
 
+	}
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }

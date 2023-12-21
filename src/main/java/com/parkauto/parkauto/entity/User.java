@@ -28,6 +28,8 @@ public class User implements UserDetails {
     @Column(name="EMAIL")
     private String email;
 
+    @Column(name="USERNAME")
+    private String username;
     @Column(name="PASSWORD")
     private String password;
 

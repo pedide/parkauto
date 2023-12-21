@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         request -> request.requestMatchers(antMatcher("/**"))
                                 .permitAll()
-                                .requestMatchers(antMatcher("/api/admin")).hasAuthority(Role.ADMIN.name())
-                                .requestMatchers(antMatcher("/api/user")).hasAuthority(Role.USER.name())
+                                .requestMatchers(antMatcher("/api/admin")).hasAuthority(Role.ROLE_ADMIN.name())
+                                .requestMatchers(antMatcher("/api/user")).hasAuthority(Role.ROLE_USER.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(

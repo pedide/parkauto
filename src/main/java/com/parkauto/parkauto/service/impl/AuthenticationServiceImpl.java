@@ -41,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(signUpRequest.getEmail());
         user.setFirstname(signUpRequest.getFirstName());
         user.setLastname(signUpRequest.getLastName());
-        user.setRole(Role.USER);  //User is not allow to be an admin in register
+        user.setRole(Role.ROLE_USER);  //User is not allow to be an admin in register
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         LOGGER.info("Votre mot de passe"+ signUpRequest.getPassword());
 
@@ -57,10 +57,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         signInRequest.getEmail(), signInRequest.getPassword()
                 ));
 
-        var user = userRepository.findByEmail(signInRequest.getEmail())
-                .orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "Invalid email or Password ! !"));
+        var user = userRepository.findUserByEmail(signInRequest.getEmail());
+
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
@@ -78,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
 
         String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findUserByEmail(userEmail);
 
         if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
             var jwt = jwtService.generateToken(user);
