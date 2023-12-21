@@ -5,6 +5,7 @@ import com.parkauto.parkauto.entity.User;
 import com.parkauto.parkauto.exception.*;
 import com.parkauto.parkauto.repository.IUserRepository;
 import com.parkauto.parkauto.service.EmailService;
+import com.parkauto.parkauto.service.LoginAttemptService;
 import com.parkauto.parkauto.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -47,11 +48,13 @@ public class UserServiceImpl implements UserService,UserDetailsService {
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
     @Autowired
     private EmailService emailService;
+    private LoginAttemptService loginAttemptService;
 
     @Autowired
-    public UserServiceImpl(IUserRepository userRepository,BCryptPasswordEncoder passwordEncoder, EmailService emailService){
+    public UserServiceImpl(IUserRepository userRepository,BCryptPasswordEncoder passwordEncoder, EmailService emailService, LoginAttemptService loginAttemptService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.loginAttemptService = loginAttemptService;
         this.emailService = emailService;
     }
 
@@ -63,10 +66,7 @@ public void deleteUser(long id){
         userRepository.deleteById(id);
 }
 
-    @Override
-    public UserDetailsService userDetailsService() {
-        return null;
-    }
+
 
     //Méthode qui permet de réinitialiser le MDP de l'utilisateur
 @Override
@@ -81,18 +81,16 @@ public void deleteUser(long id){
         emailService.sendResetPassword(user.getEmail(),user.getFirstname(),lien);
     }
 
-   /* @Override
+   @Override
     public UserDetailsService userDetailsService(){
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findUserByEmail(username)
-                        .orElseThrow(
-                                () -> new UsernameNotFoundException("User is not found")
-                        );
+                return userRepository.findUserByEmail(username);
+
             }
         };
-    }*/
+    }
 
     @Override
     public User addNewUser(String firstname, String lastname, String username, String password, String email, String role, boolean active, boolean isNotLocked, MultipartFile profileImage) {
@@ -246,5 +244,16 @@ public void deleteUser(long id){
 
     //validateLoginAttempt() bloquer un utilisateur si celui-ci a exécuté trop de tentaive de connexion avec un mauvais MDP
     private void validateLoginAttempt(User user) {
+        if(user.isNotLocked()){
+            if(loginAttemptService.hasExceededMaxAttempts(user.getUsername())){
+                user.setNotLocked(false);
+
+            }else{
+                user.setNotLocked(true);
+            }
+
+        }else{
+            loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
+        }
     }
 }
