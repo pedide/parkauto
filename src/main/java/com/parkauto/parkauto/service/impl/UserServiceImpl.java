@@ -98,7 +98,7 @@ public void deleteUser(long id){
         String encodedPassword = encodePassword(password);
         user.setFirstname(firstname);
         user.setLastname(lastname);
-        user.setLastname(username);
+        user.setUsername(username);
         user.setEmail(email);
         user.setRole(getRoleEnumName(role));  //User is not allow to be an admin in register
         user.setProfileImageURL(setProfilImageUrl(lastname));

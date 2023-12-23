@@ -1,8 +1,7 @@
 package com.parkauto.parkauto.controller;
 
 import com.parkauto.parkauto.entity.User;
-import com.parkauto.parkauto.exception.EmailNotFoundException;
-import com.parkauto.parkauto.exception.NotAnImageFileException;
+import com.parkauto.parkauto.exception.*;
 import com.parkauto.parkauto.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class UserController {
             @RequestParam("active") String active,
             @RequestParam("isNotLocked") String isNotLocked,
             @RequestParam(value = "profileImage", required = false)MultipartFile profileImage
-    )throws NotAnImageFileException, IOException, EmailNotFoundException {
+    ) throws NotAnImageFileException, IOException, EmailNotFoundException, UserNotFoundException, EmailExistException, UsernameExistException {
 
         User updateUser = userService.updateUser(currentUsername,firstname,lastname,username,password,email,role,Boolean.parseBoolean(active),Boolean.parseBoolean(isNotLocked),profileImage);
 
